@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Therapy Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+text-align:center;
+}
+
+.header{
+font-size:24px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.card{
+background:white;
+border-radius:14px;
+padding:20px;
+box-shadow:0px 5px 15px rgba(0,0,0,0.15);
+margin:auto;
+max-width:420px;
+}
+
+.status{
+font-size:22px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.ok{color:#1a8f3a;}
+.alert{color:#d62828;}
+
+.telemetry{
+margin-top:15px;
+font-size:18px;
+text-align:left;
+}
+
+.risk{
+margin-top:15px;
+font-size:20px;
+font-weight:bold;
+}
+
+.progress{
+width:100%;
+height:18px;
+background:#ddd;
+border-radius:10px;
+margin-top:8px;
+}
+
+.progress-bar{
+height:100%;
+border-radius:10px;
+background:red;
+width:0%;
+}
+
+.lang{
+margin-top:10px;
+padding:6px;
+font-size:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header" id="title">Patient Therapy Monitor</div>
+
+<div class="card">
+
+<select class="lang" onchange="changeLanguage(this.value)">
+<option value="en">English</option>
+<option value="hi">Hindi</option>
+<option value="es">Spanish</option>
+</select>
+
+<div id="status" class="status ok">
+✔ Therapy Stable
+</div>
+
+<div class="telemetry">
+
+<p><b id="batteryLabel">Battery Level</b>: <span id="battery">92%</span></p>
+
+<p><b id="impedanceLabel">Lead Impedance</b>: <span id="impedance">1.02</span></p>
+
+<p><b id="intensityLabel">Therapy Intensity</b>: <span id="intensity">0.80</span></p>
+
+</div>
+
+<div class="risk">
+
+<span id="riskLabel">Risk Score</span>: <span id="riskValue">10%</span>
+
+<div class="progress">
+<div id="riskBar" class="progress-bar"></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let language="en"
+let currentRisk=10
+
+const text={
+
+en:{
+title:"Patient Therapy Monitor",
+battery:"Battery Level",
+impedance:"Lead Impedance",
+intensity:"Therapy Intensity",
+risk:"Risk Score",
+stable:"✔ Therapy Stable",
+alert:"⚠ Therapy degradation detected"
+},
+
+hi:{
+title:"रोगी चिकित्सा मॉनिटर",
+battery:"बैटरी स्तर",
+impedance:"लीड इम्पीडेंस",
+intensity:"थेरेपी तीव्रता",
+risk:"जोखिम स्कोर",
+stable:"✔ थेरेपी सामान्य",
+alert:"⚠ थेरेपी में गिरावट का पता चला"
+},
+
+es:{
+title:"Monitor de Terapia",
+battery:"Nivel de Batería",
+impedance:"Impedancia del Cable",
+intensity:"Intensidad de Terapia",
+risk:"Puntuación de Riesgo",
+stable:"✔ Terapia Estable",
+alert:"⚠ Degradación de terapia detectada"
+}
+
+}
+
+function applyLanguage(){
+
+document.getElementById("title").innerText=text[language].title
+document.getElementById("batteryLabel").innerText=text[language].battery
+document.getElementById("impedanceLabel").innerText=text[language].impedance
+document.getElementById("intensityLabel").innerText=text[language].intensity
+document.getElementById("riskLabel").innerText=text[language].risk
+
+updateStatus()
+
+}
+
+function changeLanguage(lang){
+
+language=lang
+applyLanguage()
+
+}
+
+function updateRisk(score){
+
+currentRisk=score
+
+document.getElementById("riskValue").innerText=score+"%"
+document.getElementById("riskBar").style.width=score+"%"
+
+updateStatus()
+
+}
+
+function updateStatus(){
+
+if(currentRisk>=60){
+
+document.getElementById("status").innerText=text[language].alert
+document.getElementById("status").className="status alert"
+
+}else{
+
+document.getElementById("status").innerText=text[language].stable
+document.getElementById("status").className="status ok"
+
+}
+
+}
+
+applyLanguage()
+updateRisk(10)
+
+/* simulate degradation after 10 seconds */
+
+setTimeout(function(){
+
+document.getElementById("battery").innerText="62%"
+document.getElementById("impedance").innerText="1.32"
+document.getElementById("intensity").innerText="0.55"
+
+updateRisk(85)
+
+},10000)
+
+</script>
+
+</body>
+</html>
