@@ -118,6 +118,25 @@ font-size:15px;
 
 <script>
 
+/* ask for notification permission */
+
+if ("Notification" in window) {
+    Notification.requestPermission();
+}
+
+function sendAlertNotification(){
+
+if(Notification.permission === "granted"){
+
+new Notification("Therapy Monitor Alert",{
+body:"Your implantable device may have a therapy issue. Please contact your clinician.",
+icon:"icon.png"
+});
+
+}
+
+}
+
 let language="en"
 let currentRisk=10
 
@@ -192,6 +211,8 @@ if(currentRisk>=60){
 document.getElementById("status").innerText=text[language].alert
 document.getElementById("status").className="status alert"
 
+sendAlertNotification()
+
 }else{
 
 document.getElementById("status").innerText=text[language].stable
@@ -204,7 +225,7 @@ document.getElementById("status").className="status ok"
 applyLanguage()
 updateRisk(10)
 
-/* simulate degradation after 10 seconds */
+/* simulate degradation */
 
 setTimeout(function(){
 
