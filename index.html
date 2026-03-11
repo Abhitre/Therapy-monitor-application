@@ -74,6 +74,17 @@ padding:6px;
 font-size:15px;
 }
 
+.notifyBtn{
+margin-top:10px;
+padding:8px 14px;
+font-size:15px;
+background:#1a73e8;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
 </style>
 
 </head>
@@ -89,6 +100,12 @@ font-size:15px;
 <option value="hi">Hindi</option>
 <option value="es">Spanish</option>
 </select>
+
+<br>
+
+<button class="notifyBtn" onclick="enableNotifications()">
+Enable Device Alerts
+</button>
 
 <div id="status" class="status ok">
 ✔ Therapy Stable
@@ -118,20 +135,30 @@ font-size:15px;
 
 <script>
 
-/* ask for notification permission */
+function enableNotifications(){
 
-if ("Notification" in window) {
-    Notification.requestPermission();
+if("Notification" in window){
+
+Notification.requestPermission().then(function(permission){
+
+if(permission==="granted"){
+alert("Device alerts enabled")
+}
+
+})
+
+}
+
 }
 
 function sendAlertNotification(){
 
-if(Notification.permission === "granted"){
+if(Notification.permission==="granted"){
 
 new Notification("Therapy Monitor Alert",{
 body:"Your implantable device may have a therapy issue. Please contact your clinician.",
 icon:"icon.png"
-});
+})
 
 }
 
@@ -241,3 +268,4 @@ updateRisk(85)
 
 </body>
 </html>
+
